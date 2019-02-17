@@ -1,0 +1,25 @@
+
+#!/bin/bash
+set -e
+
+echo "---> vendor of Laravel/Symfony"
+cd laravel-api
+if [ -f composer.json ]; then
+    echo "---> Found 'composer.json', installing dependencies using composer.phar... "
+    if [ ! -f composer.phar ]; then
+        echo '---> Install Composer'
+        curl https://getcomposer.org/installer | php
+    fi
+    if [ -d vendor ]; then
+        echo "---> packages update"
+        #php composer.phar update --no-interaction --no-ansi
+    else
+        echo "---> packages install"
+        php composer.phar install --no-interaction --no-ansi
+    fi 
+fi
+
+# service apache2 restart
+#/usr/local/bin/apache2-foreground
+#php bin/console server:run 0.0.0.0:80
+php -S 0.0.0.0:80 -t public
