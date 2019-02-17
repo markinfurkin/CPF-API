@@ -13,11 +13,9 @@ class CreateCadastroTable extends Migration
      */
     public function up()
     {
-        Schema::table('cadastro', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('cpf_cnpj', 20)>unique();
-            $table->timestamps();
-            $table->softDeletes();
+        Schema::create()('cadastro', function ($collection) {
+            $collection->index('id');
+            $collection->unique('cpf_cnpj');
         });
     }
 
