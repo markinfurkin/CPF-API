@@ -1,0 +1,63 @@
+version: '2'
+services:
+  proxy:
+    image: jwilder/nginx-proxy:latest
+    ports:
+      - "80:80"
+    volumes:
+      - "/var/run/docker.sock:/tmp/docker.sock:ro"
+        
+  local.cpf:
+    container_name: local.cpf.com.br
+    image: cpf
+    volumes:
+      - ".:/var/www/html/:rw"
+    environment:
+      VIRTUAL_HOST: local.cpf.com.br
+      pwd: '/var/www/html/'
+      ENV_ALIAS: 'dev'
+      #DATABASE
+      DB_HOST: 'local.db'
+      DB_PORT: '3306'
+      DB_DATABASE: 'cpf'
+      DB_USERNAME: 'root'
+      DB_PASSWORD: 'root'
+    build: .docker/
+    ports:
+      - "8000:8000"
+    expose:
+      - "8000"
+    depends_on:
+      - local.db
+    command: ./assemble
+    tty: true
+    #command: sleep 80000
+  mongo:
+    image: mongo:3.2
+    restart: unless-stopped
+    volumes:
+     - ../.data/mongo:/data/db
+    command: mongod --smallfiles --oplogSize 128 --replSet rs0
+    labels:
+      - "traefik.enable=false"
+    ports:
+      - "27017:27017"
+    environment:
+      VIRTUAL_HOST: mongo.local
+  local.db:
+    container_name: local.db
+    image: mariadb
+    volumes:
+      - "./db/local:/var/lib/mysql"
+      - "./migrations:/var/migrations"
+      - "./migrations:/docker-entrypoint-initdb.d/:ro"
+    environment:
+      VIRTUAL_HOST: local.db
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: flexy
+    ports:
+      - "3306:3306"
+    expose:
+      - "3306"
+    #build: ./migrations/
+
