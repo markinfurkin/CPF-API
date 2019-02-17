@@ -5,8 +5,16 @@ RUN apt-get update
 
 #PHP
 RUN apt-get update -y && apt-get install -y libpng-dev curl libcurl4-openssl-dev git zip unzip
+RUN apt-get install -y autoconf pkg-config libssl-dev
 RUN docker-php-ext-install pdo pdo_mysql gd curl zip
 RUN docker-php-ext-install mysqli
+
+
+#MONGO Driver
+RUN pecl install mongodb-1.2.2
+RUN docker-php-ext-install bcmath
+RUN echo "extension=mongodb.so" >> /usr/local/etc/php/conf.d/mongodb.ini
+
 
 #Apache
 # sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
