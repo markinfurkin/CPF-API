@@ -23,3 +23,5 @@ fi
 #/usr/local/bin/apache2-foreground
 #php bin/console server:run 0.0.0.0:80
 php -S 0.0.0.0:80 -t public
+
+php artisan db:seed
