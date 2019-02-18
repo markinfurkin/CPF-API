@@ -13,7 +13,10 @@ var pump = require('pump');
 var filesJs = [
   'node_modules/jquery/dist/jquery.min.js',
   'node_modules/bootstrap/dist/js/bootstrap.min.js',
+  'node_modules/jquery-mask-plugin/dist/jquery.mask.min.js',
   'app/assets/js/src/apiHandler.js',
+  'app/assets/js/src/Table.js',
+  'app/assets/js/src/Mask.js',
   'app/assets/js/src/global.js',
 ];
 
@@ -25,9 +28,9 @@ gulp.task('scripts', function() {
   .pipe(concat('dist.js'))
   //.pipe(stripDebug())
   //.pipe(browserify())
-  .pipe(babel({
-    presets: ['@babel/env']
-  }))
+  // .pipe(babel({
+  //   presets: ['@babel/env']
+  // }))
   //.pipe(uglify())
   .on('error', function (err) { gutil.log(gutil.colors.red('[Error]'), err.toString()); })
   .pipe(gulp.dest('app/assets/js/dist'));
@@ -62,6 +65,7 @@ gulp.task('styles', function() {
   var files = [
     'node_modules/bootstrap/dist/css/bootstrap.min.css',
     'node_modules/font-awesome/css/font-awesome.min.css',
+    'app/assets/css/src/bootstrap-switch.css',
     'app/assets/css/src/global.css'
   ]
 
