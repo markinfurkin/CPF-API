@@ -12,7 +12,7 @@ if [ -f composer.json ]; then
     fi
     if [ -d vendor ]; then
         echo "---> packages update"
-        #php composer.phar update --no-interaction --no-ansi
+        php composer.phar update --no-interaction --no-ansi
     else
         echo "---> packages install"
         php composer.phar install --no-interaction --no-ansi
