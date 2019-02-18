@@ -3,6 +3,10 @@ EXPOSE 8080
 RUN rm /etc/apt/preferences.d/no-debian-php
 RUN apt-get update
 
+#WAIT FOR IT
+COPY wait-for-it.sh /wait-for-it.sh
+RUN chmod +x /wait-for-it.sh
+
 #PHP
 RUN apt-get update -y && apt-get install -y libpng-dev curl libcurl4-openssl-dev git zip unzip
 RUN apt-get install -y autoconf pkg-config libssl-dev
