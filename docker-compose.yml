@@ -6,15 +6,13 @@ services:
       - "80:80"
     volumes:
       - "/var/run/docker.sock:/tmp/docker.sock:ro"
-        
   api:
-    container_name: local.cpf.com.br
-    image: cpf
+    container_name: local.api.cadastro
+    image: api
     volumes:
-      - ".:/var/www/html/:rw"
+      - "./API:/var/www/html/:rw"
     environment:
-      VIRTUAL_HOST: local.cpf.com.br
-      pwd: '/var/www/html/'
+      VIRTUAL_HOST: local.api.cadastro
       ENV_ALIAS: 'dev'
       #DATABASE
       DB_HOST: mongo
@@ -32,6 +30,7 @@ services:
     command: ./assemble
     tty: true
     #command: sleep 80000
+  
   mongo:
     image: tutum/mongodb
     #restart: unless-stopped
@@ -47,20 +46,16 @@ services:
       MONGODB_PASS: "neoway"
     expose:
        - "27017"
-  # local.db:
-  #   container_name: local.db
-  #   image: mariadb
-  #   volumes:
-  #     - "./db/local:/var/lib/mysql"
-  #     - "./migrations:/var/migrations"
-  #     - "./migrations:/docker-entrypoint-initdb.d/:ro"
-  #   environment:
-  #     VIRTUAL_HOST: local.db
-  #     MYSQL_ROOT_PASSWORD: root
-  #     MYSQL_DATABASE: flexy
-  #   ports:
-  #     - "3306:3306"
-  #   expose:
-  #     - "3306"
-    #build: ./migrations/
 
+  spa:
+    container_name: local.spa.cadastro
+    environment:
+      VIRTUAL_HOST: local.spa.cadastro
+    image: node
+    volumes:
+      - "./SPA:/app:rw"
+    ports:
+      - "3000:3000"
+    expose:
+      - "3000"
+    command:  /app/assemble
