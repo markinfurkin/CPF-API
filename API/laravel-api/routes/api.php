@@ -25,7 +25,7 @@ Route::group(array(), function()
       return response()->json(['message' => 'Cadastro API', 'status' => 'Connected']);;
   });
 
-  Route::resource('Cadastro', 'CadastroController');
+  Route::resource('cadastro', 'CadastroController');
 });
 
 Route::get('/', function () {
